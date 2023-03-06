@@ -40,8 +40,13 @@ class CompilerUtils {
           folder = file.parent.path;
         } else {
           folder = outputDir;
-          if (file.parent.absolute.path != directory.absolute.path) {
-            folder = '$folder/${file.parent.path.substring(directory.path.length + 1, file.parent.path.length)}';
+          String parentPath = file.parent.absolute.path;
+          if (!parentPath.endsWith('/')) parentPath += '/';
+          String directoryPath = directory.absolute.path;
+          if (!directoryPath.endsWith('/')) directoryPath += '/';
+
+          if (parentPath != directoryPath) {
+            folder = '$folder/${file.parent.path.substring(directory.path.length + (directory.path.endsWith('/') ? 0 : 1), file.parent.path.length)}';
           }
           Directory(folder).createSync(recursive: true);
         }
